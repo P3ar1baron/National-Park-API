@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NationalParkAPI.Repository.IRepository;
 
@@ -20,6 +15,14 @@ namespace NationalParkAPI.Controllers
         {
             _npRepo = npRepo;
             _mapper = mapper;
+        }
+
+        [HttpGet]
+        public IActionResult GetNationalParks()
+        {
+            var objList = _npRepo.GetNationalParks();
+
+            return Ok(objList);
         }
     }
 }
