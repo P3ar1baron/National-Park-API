@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NationalParkAPI.DataAccess;
+using NationalParkAPI.Repository;
+using NationalParkAPI.Repository.IRepository;
 
 namespace NationalParkAPI
 {
@@ -29,6 +31,10 @@ namespace NationalParkAPI
         {
             services.AddDbContext<ApplicationDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            //dependency injection
+            services.AddScoped<INationalParkRepository, NationalParkRepository>();
+
             services.AddControllers();
         }
 
