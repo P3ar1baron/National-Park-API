@@ -37,6 +37,11 @@ namespace NationalParkAPI.Repository
             throw new NotImplementedException();
         }
 
+        public bool Save()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool UpdateNationalPark(NationalPark nationalPark)
         {
             throw new NotImplementedException();

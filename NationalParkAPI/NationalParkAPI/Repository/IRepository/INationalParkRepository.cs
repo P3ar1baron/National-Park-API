@@ -20,5 +20,7 @@ namespace NationalParkAPI.Repository.IRepository
         bool UpdateNationalPark(NationalPark nationalPark);
         bool DeleteNationalPark(NationalPark nationalPark);
 
+        bool Save();
+
     }
 }
