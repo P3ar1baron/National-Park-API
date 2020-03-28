@@ -17,24 +17,24 @@ namespace NationalParkAPI.Repository
         {
             _db = db;
         }
-        public bool CreateNationalPark(NationalParkDto nationalPark)
+        public bool CreateNationalPark(NationalPark nationalPark)
         {
             _db.NationalParks.Add(nationalPark);
             return Save();
         }
 
-        public bool DeleteNationalPark(NationalParkDto nationalPark)
+        public bool DeleteNationalPark(NationalPark nationalPark)
         {
             _db.NationalParks.Remove(nationalPark);
             return Save();
         }
 
-        public NationalParkDto GetNationalPark(int nationalParkId)
+        public NationalPark GetNationalPark(int nationalParkId)
         {
             return _db.NationalParks.FirstOrDefault(_ => _.Id == nationalParkId);
         }
 
-        public ICollection<NationalParkDto> GetNationalParks()
+        public ICollection<NationalPark> GetNationalParks()
         {
             return _db.NationalParks.OrderBy(_ => _.Name).ToList();
         }
@@ -55,7 +55,7 @@ namespace NationalParkAPI.Repository
             return _db.SaveChanges() >= 0 ? true : false;
         }
 
-        public bool UpdateNationalPark(NationalParkDto nationalPark)
+        public bool UpdateNationalPark(NationalPark nationalPark)
         {
             _db.NationalParks.Update(nationalPark);
             return Save();
