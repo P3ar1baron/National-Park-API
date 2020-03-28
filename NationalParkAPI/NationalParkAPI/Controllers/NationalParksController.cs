@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using NationalParkAPI.Models.Dto;
 using NationalParkAPI.Repository.IRepository;
+using System.Collections.Generic;
 
 namespace NationalParkAPI.Controllers
 {
@@ -22,7 +24,13 @@ namespace NationalParkAPI.Controllers
         {
             var objList = _npRepo.GetNationalParks();
 
-            return Ok(objList);
+            var objDto = new List<NationalParkDto>();
+
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<NationalParkDto>(obj));
+            }
+            return Ok(objDto);
         }
     }
 }
