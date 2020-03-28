@@ -1,4 +1,5 @@
-﻿using NationalParkAPI.Models;
+﻿using NationalParkAPI.DataAccess;
+using NationalParkAPI.Models;
 using NationalParkAPI.Repository.IRepository;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,14 @@ namespace NationalParkAPI.Repository
 {
     public class NationalParkRepository : INationalParkRepository
     {
+        
+        private readonly ApplicationDbContext _db;
+
+        //dependency injection via constructor
+        public NationalParkRepository(ApplicationDbContext db)
+        {
+            _db = db;
+        }
         public bool CreateNationalPark(NationalPark nationalPark)
         {
             throw new NotImplementedException();
