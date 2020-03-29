@@ -34,7 +34,7 @@ namespace NationalParkAPI.Controllers
             return Ok(objDto);
         }
 
-        [HttpGet("{nationalParkId:int}")]
+        [HttpGet("{nationalParkId:int}", Name = "GetNationalPark")]
         public IActionResult GetNationalPark(int nationalParkId)
         {
             var obj = _npRepo.GetNationalPark(nationalParkId);
@@ -74,8 +74,8 @@ namespace NationalParkAPI.Controllers
                 ModelState.AddModelError("", $"Something went wrong when saving the record {nationalParkObj.Name}");
                 return StatusCode(500, ModelState);
             }
-
-            return Ok();
+            
+            return CreatedAtRoute("GetNationalPark", new { nationalParkId = nationalParkObj.Id },nationalParkObj);
         }
     }
 }
