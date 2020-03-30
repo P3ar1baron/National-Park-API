@@ -9,6 +9,9 @@ using NationalParkAPI.DataAccess;
 using NationalParkAPI.ParkMapper;
 using NationalParkAPI.Repository;
 using NationalParkAPI.Repository.IRepository;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace NationalParkAPI
 {
@@ -38,6 +41,9 @@ namespace NationalParkAPI
                         Title = "Parky API",
                         Version = "1"
                     });
+                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+                options.IncludeXmlComments(cmlCommentsFullPath);
             });
 
             services.AddControllers();
@@ -55,7 +61,11 @@ namespace NationalParkAPI
 
             app.UseSwagger();
 
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpec/swagger.json", "ParkyAPI");
+                options.RoutePrefix = "";
+            });
 
             app.UseRouting();
 
