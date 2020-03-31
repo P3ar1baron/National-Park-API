@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NationalParkAPI.Models.Dto;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using static NationalParkAPI.Models.Trail;
 
-namespace NationalParkAPI.Models
+namespace NationalParkAPI.Models.Dtos
 {
-    public class Trail
+    public class TrailDto
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -18,18 +18,12 @@ namespace NationalParkAPI.Models
         [Required]
         public double Distance { get; set; }
 
-        public enum DifficultyType { Easy, Moderate, Difficult, Expert}
-
         public DifficultyType Difficulty { get; set; }
 
         [Required]
         public int NationalParkId { get; set; }
 
-        [ForeignKey("NationalParkId")]
 
-        public NationalPark NationalPark { get; set; }
-
-        public DateTime DateCreated { get; set; }
-
+        public NationalParkDto NationalPark { get; set; }
     }
 }
