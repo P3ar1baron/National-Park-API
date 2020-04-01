@@ -12,6 +12,8 @@ using NationalParkAPI.Repository.IRepository;
 using System;
 using System.IO;
 using System.Reflection;
+using TrailAPI.Repository;
+using TrailAPI.Repository.IRepository;
 
 namespace NationalParkAPI
 {
@@ -32,6 +34,7 @@ namespace NationalParkAPI
 
             //dependency injection
             services.AddScoped<INationalParkRepository, NationalParkRepository>();
+            services.AddScoped<ITrailRepository, TrailRepository>();
 
             services.AddAutoMapper(typeof(ParkyMappings));
             services.AddSwaggerGen(options=> {
