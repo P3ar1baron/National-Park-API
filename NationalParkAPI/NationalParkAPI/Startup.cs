@@ -14,6 +14,7 @@ using System.IO;
 using System.Reflection;
 using TrailAPI.Repository;
 using TrailAPI.Repository.IRepository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace NationalParkAPI
 {
@@ -37,6 +38,14 @@ namespace NationalParkAPI
             services.AddScoped<ITrailRepository, TrailRepository>();
 
             services.AddAutoMapper(typeof(ParkyMappings));
+
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
+
             services.AddSwaggerGen(options=> {
                 options.SwaggerDoc("ParkyOpenAPISpec",
                     new Microsoft.OpenApi.Models.OpenApiInfo()
