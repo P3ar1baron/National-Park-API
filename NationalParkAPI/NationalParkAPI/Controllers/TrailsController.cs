@@ -75,6 +75,30 @@ namespace TrailAPI.Controllers
 
         }
 
+
+        [HttpGet("[action]/{trailId:int}")]
+        [ProducesResponseType(200, Type = typeof(TrailDto))]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
+        public IActionResult GetTrailsInNationalPark(int nationalParkId)
+        {
+            var objList = _trailRepo.GetTrailsInNationalPark(nationalParkId);
+
+            if (objList == null)
+            {
+                return NotFound();
+            }
+
+            var objDto = new List<TrailDto>();
+            foreach (var obj in objList)
+            {
+                objDto.Add(_mapper.Map<TrailDto>(obj));
+            }
+           
+            return Ok(objDto);
+
+        }
+
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(TrailDto))]
         [ProducesResponseType(StatusCodes.Status201Created)]

@@ -3,9 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
 
 namespace NationalParkAPI
 {
@@ -28,6 +27,10 @@ namespace NationalParkAPI
                         Version = desc.ApiVersion.ToString()
                     });
             }
+
+               var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+               var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+               options.IncludeXmlComments(cmlCommentsFullPath);
         }
     }
 }
