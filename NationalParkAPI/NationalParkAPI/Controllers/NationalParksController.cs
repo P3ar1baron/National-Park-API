@@ -8,7 +8,8 @@ using System.Collections.Generic;
 
 namespace NationalParkAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/nationalparks")]
+    //[Route("api/[controller]")]
     [ApiController]
     //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

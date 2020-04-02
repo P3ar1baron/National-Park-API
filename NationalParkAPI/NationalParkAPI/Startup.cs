@@ -16,6 +16,8 @@ using TrailAPI.Repository;
 using TrailAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NationalParkAPI
 {
@@ -47,26 +49,29 @@ namespace NationalParkAPI
                 options.ReportApiVersions = true;
             });
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
+            //use di to bind swagger config to swaggergen options
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            services.AddSwaggerGen();
 
-            services.AddSwaggerGen(options=> {
-                options.SwaggerDoc("ParkyOpenAPISpec",
-                    new Microsoft.OpenApi.Models.OpenApiInfo()
-                    {
-                        Title = "Parky API",
-                        Version = "1",
-                        Description = "API for Parky"
-                    });
-                //options.SwaggerDoc("ParkyOpenAPISpecTrails",
-                //    new Microsoft.OpenApi.Models.OpenApiInfo()
-                //    {
-                //        Title = "Parky API Trails",
-                //        Version = "1",
-                //        Description = "API for Trail entity"
-                //    });
-                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
-                options.IncludeXmlComments(cmlCommentsFullPath);
-            });
+            //services.AddSwaggerGen(options=> {
+            //    options.SwaggerDoc("ParkyOpenAPISpec",
+            //        new Microsoft.OpenApi.Models.OpenApiInfo()
+            //        {
+            //            Title = "Parky API",
+            //            Version = "1",
+            //            Description = "API for Parky"
+            //        });
+            //    //options.SwaggerDoc("ParkyOpenAPISpecTrails",
+            //    //    new Microsoft.OpenApi.Models.OpenApiInfo()
+            //    //    {
+            //    //        Title = "Parky API Trails",
+            //    //        Version = "1",
+            //    //        Description = "API for Trail entity"
+            //    //    });
+            //    var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            //    var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+            //    options.IncludeXmlComments(cmlCommentsFullPath);
+            //});
 
             services.AddControllers();
         }
@@ -85,10 +90,20 @@ namespace NationalParkAPI
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpec/swagger.json", "Parky API");
-                //options.SwaggerEndpoint("/swagger/ParkyOpenAPISpecTrails/swagger.json", "Parky API Trails");
-                options.RoutePrefix = "";
+                foreach (var desc in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json",
+                        desc.GroupName.ToUpperInvariant());
+                    options.RoutePrefix = "";
+                }
             });
+
+            //app.UseSwaggerUI(options =>
+            //{
+            //    options.SwaggerEndpoint("/swagger/ParkyOpenAPISpec/swagger.json", "Parky API");
+            //    //options.SwaggerEndpoint("/swagger/ParkyOpenAPISpecTrails/swagger.json", "Parky API Trails");
+            //    options.RoutePrefix = "";
+            //});
 
             app.UseRouting();
 

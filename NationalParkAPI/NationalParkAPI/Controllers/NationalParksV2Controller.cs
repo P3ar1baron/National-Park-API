@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using NationalParkAPI.Models.Dto;
 using NationalParkAPI.Repository.IRepository;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NationalParkAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/nationalparks")]
+    [ApiVersion("2.0")]
     [ApiController]
     //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -30,18 +32,10 @@ namespace NationalParkAPI.Controllers
         [ProducesResponseType(200,Type = typeof(List<NationalParkDto>))]
         public IActionResult GetNationalParks()
         {
-            var objList = _npRepo.GetNationalParks();
+            var obj = _npRepo.GetNationalParks().FirstOrDefault();
 
-            var objDto = new List<NationalParkDto>();
-
-            foreach (var obj in objList)
-            {
-                objDto.Add(_mapper.Map<NationalParkDto>(obj));
-            }
-            return Ok(objDto);
+            return Ok(_mapper.Map<NationalParkDto>(obj));
         }
-
-
 
     }
 }

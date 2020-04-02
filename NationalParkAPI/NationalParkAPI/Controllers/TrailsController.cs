@@ -8,7 +8,7 @@ using TrailAPI.Repository.IRepository;
 
 namespace TrailAPI.Controllers
 {
-    [Route("api/Trails")]
+    [Route("api/v{version:apiVersion}/trails")]
     [ApiController]
     //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecTrails")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
