@@ -15,6 +15,7 @@ using System.Reflection;
 using TrailAPI.Repository;
 using TrailAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace NationalParkAPI
 {
@@ -45,6 +46,7 @@ namespace NationalParkAPI
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.ReportApiVersions = true;
             });
+            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
 
             services.AddSwaggerGen(options=> {
                 options.SwaggerDoc("ParkyOpenAPISpec",
@@ -70,7 +72,7 @@ namespace NationalParkAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
