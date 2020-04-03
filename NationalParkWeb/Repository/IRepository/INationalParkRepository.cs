@@ -2,7 +2,7 @@
 
 namespace NationalParkWeb.Repository.IRepository
 {
-    interface INationalParkRepository : IRepository<NationalPark>
+    public interface INationalParkRepository : IRepository<NationalPark>
     {
 
     }
