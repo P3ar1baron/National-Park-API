@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 
 function loadDataTable() {
-    dataTable = $('#tblData').DataTable({
+    wdataTable = $('#tblData').DataTable({
         "ajax": {
             "url": "/nationalParks/GetAllNationalPark",
             "type": "GET",
