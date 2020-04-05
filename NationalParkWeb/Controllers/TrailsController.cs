@@ -79,6 +79,7 @@ namespace NationalParkWeb.Controllers
             }
         }
 
+        //why it is not called by jquery ajax ?
         public async Task<IActionResult> GetAllTrail()
         {
             return Json(new { data = await _trailRepo.GetAllAsync(SD.TrailAPIPath) });
