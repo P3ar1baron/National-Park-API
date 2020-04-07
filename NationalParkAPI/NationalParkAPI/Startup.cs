@@ -54,6 +54,9 @@ namespace NationalParkAPI
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen();
 
+            var appSettings = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettings);
+
             //services.AddSwaggerGen(options=> {
             //    options.SwaggerDoc("ParkyOpenAPISpec",
             //        new Microsoft.OpenApi.Models.OpenApiInfo()
