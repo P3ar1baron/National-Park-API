@@ -21,8 +21,8 @@ namespace NationalParkWeb.Controllers
            ITrailRepository trailRepo )
         {
             _logger = logger;
+           _npRepo = npRepo;
             _trailRepo = trailRepo;
-            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
