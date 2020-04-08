@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace NationalParkAPI
 {
@@ -54,8 +57,30 @@ namespace NationalParkAPI
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen();
 
-            var appSettings = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettings);
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+            services.AddAuthentication(_ =>
+            {
+                _.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                _.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(_ =>
+                {
+                    _.RequireHttpsMetadata = false;
+                    _.SaveToken = true;
+                    _.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                };
+        });
 
             //services.AddSwaggerGen(options=> {
             //    options.SwaggerDoc("ParkyOpenAPISpec",
