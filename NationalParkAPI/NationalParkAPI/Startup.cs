@@ -136,6 +136,13 @@ namespace NationalParkAPI
 
             app.UseRouting();
 
+            //additional http headers
+            app.UseCors(_ => _
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
