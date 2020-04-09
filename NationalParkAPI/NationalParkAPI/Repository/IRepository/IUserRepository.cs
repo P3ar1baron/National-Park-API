@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NationalParkAPI.Repository.IRepository
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
         bool IsUniqueUser(string username);
 
