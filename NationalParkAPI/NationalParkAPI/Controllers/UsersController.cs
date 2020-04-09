@@ -25,7 +25,7 @@ namespace NationalParkAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] User model)
+        public IActionResult Authenticate([FromBody] AuthenticateModel model)
         {
             var user = _userRepo.Authenticate(model.Username, model.Password);
 
@@ -39,7 +39,7 @@ namespace NationalParkAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] User model)
+        public IActionResult Register([FromBody] AuthenticateModel model)
         {
             bool ifUserNameUnique = _userRepo.IsUniqueUser(model.Username);
 
