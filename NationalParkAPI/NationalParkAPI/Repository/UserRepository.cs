@@ -42,12 +42,12 @@ namespace NationalParkAPI.Repository
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials
-                                (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                                (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
-
+            user.Password = "";
             return user;
         }
 
