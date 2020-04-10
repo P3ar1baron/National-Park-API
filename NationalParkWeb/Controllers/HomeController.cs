@@ -65,7 +65,7 @@ namespace NationalParkWeb.Controllers
             }
 
             HttpContext.Session.SetString("JWTToken", objUser.Token);
-            return RedirectToAction("~/Home/Index");
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -85,14 +85,14 @@ namespace NationalParkWeb.Controllers
                 return View();
             }
 
-            return RedirectToAction("~/Home/Login");
+            return RedirectToAction("Login");
         }
 
         public IActionResult Logout()
         {
             HttpContext.Session.SetString("JWTToken", "");
 
-            return RedirectToAction("~/Home/Index");
+            return RedirectToAction("Index");
         }
 
 
