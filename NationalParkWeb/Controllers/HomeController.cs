@@ -88,7 +88,7 @@ namespace NationalParkWeb.Controllers
             return RedirectToAction("~/Home/Login");
         }
 
-        public IActionResult LogoutAsync()
+        public IActionResult Logout()
         {
             HttpContext.Session.SetString("JWTToken", "");
 
