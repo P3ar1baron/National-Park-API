@@ -79,8 +79,8 @@ namespace NationalParkWeb
                 );
 
             app.UseSession();
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

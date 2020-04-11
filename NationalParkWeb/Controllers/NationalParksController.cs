@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NationalParkWeb.Models;
 using NationalParkWeb.Repository.IRepository;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace NationalParkWeb.Controllers
 {
+    [Authorize]
     public class NationalParksController : Controller
     {
         private readonly INationalParkRepository _npRepo;
@@ -23,6 +22,7 @@ namespace NationalParkWeb.Controllers
             return View(new NationalPark() { });
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Upsert(int? id)
         {
             NationalPark obj = new NationalPark();
@@ -91,6 +91,7 @@ namespace NationalParkWeb.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var status = await _npRepo.DeleteAsync(SD.NationalParkAPIPath, id, HttpContext.Session.GetString("JWTToken"));
