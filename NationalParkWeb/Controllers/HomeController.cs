@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NationalParkWeb.Models;
 using NationalParkWeb.Models.ViewModel;
 using NationalParkWeb.Repository.IRepository;
 using System.Diagnostics;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace NationalParkWeb.Controllers
@@ -64,6 +67,13 @@ namespace NationalParkWeb.Controllers
                 return View();
             }
 
+            //implement authentication without Identity swerer
+            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            identity.AddClaim(new Claim(ClaimTypes.Name, obj.Username));
+            identity.AddClaim(new Claim(ClaimTypes.Role, objUser.Role));
+            var principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
             HttpContext.Session.SetString("JWTToken", objUser.Token);
             return RedirectToAction("Index");
         }
@@ -88,13 +98,18 @@ namespace NationalParkWeb.Controllers
             return RedirectToAction("Login");
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync();
             HttpContext.Session.SetString("JWTToken", "");
-
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
     }
 }
