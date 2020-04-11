@@ -75,6 +75,7 @@ namespace NationalParkWeb.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             HttpContext.Session.SetString("JWTToken", objUser.Token);
+            TempData["alert"] = "Welcome " + objUser.Username;
             return RedirectToAction("Index");
         }
 
@@ -95,6 +96,7 @@ namespace NationalParkWeb.Controllers
                 return View();
             }
 
+            TempData["alert"] = "Registration successful";
             return RedirectToAction("Login");
         }
 

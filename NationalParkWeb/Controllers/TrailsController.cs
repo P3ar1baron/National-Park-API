@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NationalParkWeb.Controllers
 {
+    [Authorize]
     public class TrailsController : Controller
     {
         private readonly INationalParkRepository _npRepo;
@@ -27,6 +29,7 @@ namespace NationalParkWeb.Controllers
             return View(new Trail() { });
         }
 
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Upsert(int? id)
         {
             //populate dropdown
