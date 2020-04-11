@@ -29,8 +29,8 @@ namespace NationalParkWeb.Controllers
         {
             IndexVM listOfParksAndTrails = new IndexVM()
             {
-                NationalParkList = await _npRepo.GetAllAsync(SD.NationalParkAPIPath),
-                TrailList = await _trailRepo.GetAllAsync(SD.TrailAPIPath),
+                NationalParkList = await _npRepo.GetAllAsync(SD.NationalParkAPIPath, HttpContext.Session.GetString("JWTToken")),
+                TrailList = await _trailRepo.GetAllAsync(SD.TrailAPIPath, HttpContext.Session.GetString("JWTToken")),
             };
             return View(listOfParksAndTrails);
         }

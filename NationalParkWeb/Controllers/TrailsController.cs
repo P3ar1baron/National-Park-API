@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace NationalParkWeb.Controllers
 {
@@ -29,7 +30,7 @@ namespace NationalParkWeb.Controllers
         public async Task<IActionResult> Upsert(int? id)
         {
             //populate dropdown
-            IEnumerable<NationalPark> npList = await _npRepo.GetAllAsync(SD.NationalParkAPIPath);
+            IEnumerable<NationalPark> npList = await _npRepo.GetAllAsync(SD.NationalParkAPIPath, HttpContext.Session.GetString("JWTToken"));
 
             TrailsVM objVM = new TrailsVM()
             {
@@ -47,7 +48,7 @@ namespace NationalParkWeb.Controllers
             }
 
             //flow will come here for update
-            objVM.Trail = await _trailRepo.GetAsync(SD.TrailAPIPath, id.GetValueOrDefault());
+            objVM.Trail = await _trailRepo.GetAsync(SD.TrailAPIPath, id.GetValueOrDefault(), HttpContext.Session.GetString("JWTToken"));
 
             if (objVM.Trail == null)
             {
@@ -65,11 +66,11 @@ namespace NationalParkWeb.Controllers
             {
                 if (obj.Trail.Id == 0 )
                 {
-                    await _trailRepo.CreateAsync(SD.TrailAPIPath, obj.Trail);
+                    await _trailRepo.CreateAsync(SD.TrailAPIPath, obj.Trail, HttpContext.Session.GetString("JWTToken"));
                 }
                 else
                 {
-                    await _trailRepo.UpdateAsync(SD.TrailAPIPath + obj.Trail.Id, obj.Trail);
+                    await _trailRepo.UpdateAsync(SD.TrailAPIPath + obj.Trail.Id, obj.Trail, HttpContext.Session.GetString("JWTToken"));
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -82,13 +83,13 @@ namespace NationalParkWeb.Controllers
         //why it is not called by jquery ajax ?
         public async Task<IActionResult> GetAllTrail()
         {
-            return Json(new { data = await _trailRepo.GetAllAsync(SD.TrailAPIPath) });
+            return Json(new { data = await _trailRepo.GetAllAsync(SD.TrailAPIPath, HttpContext.Session.GetString("JWTToken")) });
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            var status = await _trailRepo.DeleteAsync(SD.TrailAPIPath, id);
+            var status = await _trailRepo.DeleteAsync(SD.TrailAPIPath, id, HttpContext.Session.GetString("JWTToken"));
             if (status)
             {
                 return Json(new { succes = true, message = "Delete Successfull" });
